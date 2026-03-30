@@ -17,6 +17,7 @@ const orderSchema = new mongoose.Schema({
   shippingFee: { type: Number, default: 0 },
   total: { type: Number, required: true },
   status: { type: String, enum: ['pending', 'shipping', 'completed', 'cancelled'], default: 'pending' },
+  handlerId: { type: String }, // Lưu ID của Nhân viên xử lý (người chuyển pending -> shipping/completed)
   paymentMethod: { type: String, default: 'cod' },
   createdAt: { type: String, default: () => new Date().toISOString() }
 });

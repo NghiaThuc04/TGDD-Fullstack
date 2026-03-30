@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { getStaffListApi, calculateCommission, createStaffApi, updateStaffApi, deleteStaffApi } from '../services/api';
+import { getStaffListApi, createStaffApi, updateStaffApi, deleteStaffApi, getStaffActivitiesApi } from '../services/api';
 import { User } from '../types';
 import { useAuth } from '../context/AuthContext';
 import { Navigate } from 'react-router-dom';
@@ -34,6 +34,11 @@ const StaffManagement: React.FC = () => {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   const [error, setError] = useState('');
+
+  // Activity State
+  const [activityUser, setActivityUser] = useState<User | null>(null);
+  const [activitiesData, setActivitiesData] = useState<any>(null);
+  const [loadingActivities, setLoadingActivities] = useState(false);
 
   if (currentUser?.role !== 'admin') return <Navigate to="/" replace />;
 
@@ -101,6 +106,20 @@ const StaffManagement: React.FC = () => {
     }
   };
 
+  const openActivities = async (user: User) => {
+    setActivityUser(user);
+    setActivitiesData(null);
+    setLoadingActivities(true);
+    try {
+      const data = await getStaffActivitiesApi(user.id);
+      setActivitiesData(data);
+    } catch (err: any) {
+      alert('Lỗi tải báo cáo: ' + err.message);
+    } finally {
+      setLoadingActivities(false);
+    }
+  };
+
   const adminList = staff.filter(u => u.role === 'admin');
   const staffList = staff.filter(u => u.role === 'staff');
 
@@ -135,7 +154,7 @@ const StaffManagement: React.FC = () => {
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                {adminList.map(u => <StaffCard key={u.id} user={u} currentUser={currentUser} onEdit={openEdit} onDelete={setConfirmDelete} confirmDelete={confirmDelete} deletingId={deletingId} onConfirmDelete={handleDelete} onCancelDelete={() => setConfirmDelete(null)} />)}
+                {adminList.map(u => <StaffCard key={u.id} user={u} currentUser={currentUser} onEdit={openEdit} onDelete={setConfirmDelete} confirmDelete={confirmDelete} deletingId={deletingId} onConfirmDelete={handleDelete} onCancelDelete={() => setConfirmDelete(null)} onViewActivities={openActivities} />)}
               </div>
             </div>
           )}
@@ -156,7 +175,7 @@ const StaffManagement: React.FC = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                {staffList.map(u => <StaffCard key={u.id} user={u} currentUser={currentUser} onEdit={openEdit} onDelete={setConfirmDelete} confirmDelete={confirmDelete} deletingId={deletingId} onConfirmDelete={handleDelete} onCancelDelete={() => setConfirmDelete(null)} />)}
+                {staffList.map(u => <StaffCard key={u.id} user={u} currentUser={currentUser} onEdit={openEdit} onDelete={setConfirmDelete} confirmDelete={confirmDelete} deletingId={deletingId} onConfirmDelete={handleDelete} onCancelDelete={() => setConfirmDelete(null)} onViewActivities={openActivities} />)}
               </div>
             )}
           </div>
@@ -255,6 +274,100 @@ const StaffManagement: React.FC = () => {
           </form>
         </div>
       )}
+
+      {/* ─── Activity Modal ─── */}
+      {activityUser && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8">
+          <div className="absolute inset-0 bg-gray-900/70 backdrop-blur-sm" onClick={() => setActivityUser(null)} />
+          <div className="relative bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-[40px] p-8 md:p-10 shadow-2xl space-y-7 animate-in zoom-in duration-300">
+            
+            {/* Header */}
+            <div className="flex justify-between items-center border-b border-gray-50 pb-6">
+              <div className="flex items-center gap-4">
+                 <div className="w-14 h-14 bg-primary text-white rounded-2xl flex items-center justify-center text-3xl font-black">{activityUser.name.charAt(0)}</div>
+                 <div>
+                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Báo cáo hiệu suất KPIs</p>
+                   <h3 className="text-2xl font-black uppercase italic tracking-tighter text-gray-900">{activityUser.name} <span className="text-sm border-2 border-gray-100 px-2 py-1 rounded-xl bg-gray-50 non-italic">@{activityUser.username}</span></h3>
+                 </div>
+              </div>
+              <button onClick={() => setActivityUser(null)} className="w-12 h-12 bg-gray-50 rounded-2xl text-gray-400 hover:text-red-500 hover:rotate-90 transition-all font-black text-xl">×</button>
+            </div>
+
+            {loadingActivities ? (
+              <div className="py-20 text-center flex flex-col items-center gap-4">
+                 <div className="w-10 h-10 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
+                 <span className="font-black text-gray-400 uppercase tracking-widest text-xs italic">Đang tải báo cáo...</span>
+              </div>
+            ) : activitiesData ? (
+              <div className="space-y-8">
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                   <div className="bg-primary/5 rounded-3xl p-5 border border-primary/10">
+                     <p className="text-[10px] font-black uppercase text-primary tracking-widest mb-2">Đơn Hoàn Thành</p>
+                     <p className="text-3xl font-black text-gray-900 italic">{activitiesData.stats.totalOrders}</p>
+                   </div>
+                   <div className="bg-green-50 rounded-3xl p-5 border border-green-100">
+                     <p className="text-[10px] font-black uppercase text-green-600 tracking-widest mb-2">Doanh Thu Mang Về</p>
+                     <p className="text-xl md:text-2xl font-black text-green-700 italic">{(activitiesData.stats.totalSales || 0).toLocaleString()}đ</p>
+                   </div>
+                   <div className="bg-orange-50 rounded-3xl p-5 border border-orange-100">
+                     <p className="text-[10px] font-black uppercase text-orange-600 tracking-widest mb-2">Máy / Sản Phẩm Đã Bán</p>
+                     <p className="text-3xl font-black text-orange-700 italic">{activitiesData.stats.totalProductsSold}</p>
+                   </div>
+                   <div className="bg-purple-50 rounded-3xl p-5 border border-purple-100">
+                     <p className="text-[10px] font-black uppercase text-purple-600 tracking-widest mb-2">Tin Tức / Bài Viết</p>
+                     <p className="text-3xl font-black text-purple-700 italic">{activitiesData.stats.totalArticles}</p>
+                   </div>
+                </div>
+
+                {/* Orders List */}
+                <div className="space-y-4">
+                  <h4 className="text-xs font-black uppercase tracking-widest text-gray-900 border-b border-gray-100 pb-2">Danh sách các Đơn vị Mua do Staff chốt</h4>
+                  {activitiesData.handledOrders.length === 0 ? (
+                    <p className="text-xs text-gray-400 italic">Nhân viên này chưa xử lý đơn hàng nào.</p>
+                  ) : (
+                    <div className="max-h-60 overflow-y-auto space-y-2 pr-2">
+                       {activitiesData.handledOrders.map((o: any) => (
+                         <div key={o.id} className="flex justify-between items-center bg-gray-50 rounded-2xl p-4">
+                           <div>
+                             <p className="font-black text-sm uppercase">{o.id} <span className="text-[10px] text-gray-400 non-italic ml-2">{new Date(o.createdAt).toLocaleString()}</span></p>
+                             <p className="text-xs text-gray-500 font-medium">Khách hàng: {o.customerName} - {o.phoneNumber}</p>
+                           </div>
+                           <div className="text-right">
+                             <p className="font-black text-green-600 text-lg">{o.total.toLocaleString()} đ</p>
+                             <span className={`text-[9px] font-black px-2 py-1 rounded-md uppercase border ${o.status === 'completed' ? 'bg-green-100 text-green-600 border-green-200' : 'bg-yellow-100 text-yellow-600 border-yellow-200'}`}>{o.status}</span>
+                           </div>
+                         </div>
+                       ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Articles List */}
+                <div className="space-y-4">
+                  <h4 className="text-xs font-black uppercase tracking-widest text-gray-900 border-b border-gray-100 pb-2">Danh sách Bài viết Marketing đã đăng tải</h4>
+                  {activitiesData.articles.length === 0 ? (
+                    <p className="text-xs text-gray-400 italic">Chưa đăng tải bài viết nào.</p>
+                  ) : (
+                    <div className="grid grid-cols-1 gap-2 max-h-48 overflow-y-auto pr-2">
+                      {activitiesData.articles.map((a: any) => (
+                        <div key={a.id} className="bg-indigo-50/50 p-4 rounded-2xl border border-indigo-100 flex gap-4 items-center">
+                          {a.thumbnail && <img src={a.thumbnail} className="w-12 h-12 object-cover rounded-xl" />}
+                          <div>
+                            <p className="font-black text-sm text-indigo-900 leading-tight">{a.title}</p>
+                            <p className="text-[10px] text-gray-500 mt-1">{new Date(a.createdAt).toLocaleString()}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+              </div>
+            ) : null}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -269,10 +382,10 @@ interface CardProps {
   deletingId: string | null;
   onConfirmDelete: (id: string) => void;
   onCancelDelete: () => void;
+  onViewActivities: (u: User) => void;
 }
 
-const StaffCard: React.FC<CardProps> = ({ user, currentUser, onEdit, onDelete, confirmDelete, deletingId, onConfirmDelete, onCancelDelete }) => {
-  const commission = calculateCommission(user.totalRevenue || 0);
+const StaffCard: React.FC<CardProps> = ({ user, currentUser, onEdit, onDelete, confirmDelete, deletingId, onConfirmDelete, onCancelDelete, onViewActivities }) => {
   const isSelf = user.id === currentUser?.id;
   const isAdmin = user.role === 'admin';
 
@@ -296,15 +409,10 @@ const StaffCard: React.FC<CardProps> = ({ user, currentUser, onEdit, onDelete, c
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 gap-3">
-        <div className="bg-gray-50 rounded-2xl p-3 text-center">
-          <p className="text-lg font-black text-gray-900 italic">{user.totalSales || 0}</p>
-          <p className="text-[9px] text-gray-400 font-bold uppercase">Đơn hàng</p>
-        </div>
-        <div className="bg-primary/5 rounded-2xl p-3 text-center">
-          <p className="text-sm font-black text-primary italic">{commission.toLocaleString()}đ</p>
-          <p className="text-[9px] text-gray-400 font-bold uppercase">Hoa hồng</p>
-        </div>
+      <div className="grid grid-cols-2 gap-3 mb-2">
+        <button onClick={() => onViewActivities(user)} className="col-span-2 bg-primary/10 text-primary py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-primary hover:text-white transition-all">
+          📊 XEM BÁO CÁO NHÂN SỰ NÀY
+        </button>
       </div>
 
       {/* Permissions */}

@@ -205,6 +205,10 @@ export const deleteStaffApi = async (id: string): Promise<void> => {
   await apiFetch(`/staff/${id}`, { method: 'DELETE' });
 };
 
+export const getStaffActivitiesApi = async (id: string): Promise<any> => {
+  return apiFetch<any>(`/staff/${id}/activities`);
+};
+
 // ─────────────────────────────────────────────
 // UI CONFIG API
 // ─────────────────────────────────────────────

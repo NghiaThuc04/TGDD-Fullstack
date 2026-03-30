@@ -179,8 +179,15 @@ app.post('/api/orders', protect, async (req, res) => {
 });
 
 app.put('/api/orders/:id/status', protect, staffOrAdmin, async (req, res) => {
-  const order = await Order.findOneAndUpdate({ id: req.params.id }, { status: req.body.status }, { new: true });
-  res.json({ message: 'Đã cập nhật' });
+  try {
+    const payload = { status: req.body.status };
+    // Nếu đổi sang Đang giao (shipping) hoặc Hoàn thành (completed), ghi danh người xử lý
+    if (req.body.status === 'shipping' || req.body.status === 'completed') {
+      payload.handlerId = req.user.id;
+    }
+    const order = await Order.findOneAndUpdate({ id: req.params.id }, payload, { new: true });
+    res.json({ message: 'Đã cập nhật' });
+  } catch(e) { res.status(500).json({ message: 'Lỗi server' }); }
 });
 
 app.delete('/api/orders/:id', protect, adminOnly, async (req, res) => {
@@ -191,6 +198,33 @@ app.delete('/api/orders/:id', protect, adminOnly, async (req, res) => {
 // ─────────────────────────────────────────────
 // STAFF & ARTICLES & UI
 // ─────────────────────────────────────────────
+
+app.get('/api/staff/:id/activities', protect, adminOnly, async (req, res) => {
+  try {
+    const staffId = req.params.id;
+    // Tìm đơn hàng do nhân viên này chốt (chuyển sang shipping/completed)
+    const handledOrders = await Order.find({ handlerId: staffId }).sort({ createdAt: -1 });
+    // Tìm bài viết do nhân viên này đăng
+    const articles = await Article.find({ authorId: staffId }).sort({ createdAt: -1 });
+    
+    const totalSales = handledOrders.reduce((acc, current) => acc + current.total, 0);
+    const totalProductsSold = handledOrders.reduce((acc, current) => {
+       return acc + current.items.reduce((sum, item) => sum + item.quantity, 0);
+    }, 0);
+
+    res.json({
+      handledOrders,
+      articles,
+      stats: {
+        totalOrders: handledOrders.length,
+        totalSales,
+        totalProductsSold,
+        totalArticles: articles.length
+      }
+    });
+  } catch(e) { res.status(500).json({ message: 'Lỗi lấy báo cáo hoạt động' }); }
+});
+
 app.get('/api/staff', protect, adminOnly, async (req, res) => {
   const staff = await User.find({ role: { $in: ['staff', 'admin'] } }).select('-password');
   res.json(staff);
