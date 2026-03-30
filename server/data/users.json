@@ -1,0 +1,55 @@
+[
+  {
+    "id": "1",
+    "username": "admin",
+    "password": "$2a$10$Y1WYiMUHprl93rBM1htaq.Xh2iXkdoki6MAMad0VtlyQbHUJdHaF.",
+    "name": "OnlyBuyer Admin",
+    "role": "admin",
+    "permissions": [
+      "all"
+    ],
+    "totalSales": 0,
+    "totalRevenue": 0,
+    "createdAt": "2026-03-30T15:33:13.481Z"
+  },
+  {
+    "id": "2",
+    "username": "customer_demo",
+    "password": "$2a$10$yxHJzUIg04ssxbyum6Cl5OM/QDC5KzStokM82/HbR6KiMN/TuLOL2",
+    "name": "Khách Hàng Mẫu",
+    "role": "customer",
+    "permissions": [],
+    "phoneNumber": "0987654321",
+    "address": "72 Lê Thánh Tôn, Quận 1, TP. Hồ Chí Minh",
+    "totalSales": 0,
+    "totalRevenue": 0,
+    "createdAt": "2026-03-30T15:33:13.539Z"
+  },
+  {
+    "id": "3",
+    "username": "staff1",
+    "password": "$2a$10$V8ndlH3CM3SJxbFJvsPeC.5VfCpBYkshQny7.cLLL6T4B3xG3L1NG",
+    "name": "Nguyễn Văn Nhân Viên",
+    "role": "staff",
+    "permissions": [
+      "order_confirm",
+      "manage_products"
+    ],
+    "totalSales": 12,
+    "totalRevenue": 45000000,
+    "createdAt": "2026-03-30T15:33:13.596Z"
+  },
+  {
+    "id": "4",
+    "username": "staff2",
+    "password": "$2a$10$zTL1kA437qR9./O32bpaYelHN4ZvlMWPEUkTQuiyPnww/eOsOTOZa",
+    "name": "Trần Thị Content",
+    "role": "staff",
+    "permissions": [
+      "post_article"
+    ],
+    "totalSales": 5,
+    "totalRevenue": 8000000,
+    "createdAt": "2026-03-30T15:33:13.653Z"
+  }
+]

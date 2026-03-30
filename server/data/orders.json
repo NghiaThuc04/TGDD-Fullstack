@@ -1,0 +1,60 @@
+[
+  {
+    "id": "OB-539401",
+    "userId": "1",
+    "items": [
+      {
+        "id": "p4",
+        "name": "AirPods Pro 2nd Gen",
+        "price": 6490000,
+        "category": "Phụ kiện",
+        "image": "https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=500",
+        "images": [
+          "https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=500"
+        ],
+        "description": "Chống ồn chủ động thế hệ mới, âm bass sâu, pin 30 giờ.",
+        "stock": 100,
+        "rating": 4.9,
+        "sold": 3200,
+        "createdAt": "2026-03-30T15:33:13.655Z",
+        "quantity": 2
+      }
+    ],
+    "total": 12980000,
+    "status": "completed",
+    "paymentMethod": "COD",
+    "customerName": "Thục",
+    "customerPhone": "098204104",
+    "address": "HCM",
+    "createdAt": "2026-03-30T15:40:58.020Z"
+  },
+  {
+    "id": "OB-163844",
+    "userId": "1",
+    "items": [
+      {
+        "id": "p3",
+        "name": "Samsung Galaxy S24 Ultra",
+        "price": 26990000,
+        "category": "Điện thoại",
+        "image": "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500",
+        "images": [
+          "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500"
+        ],
+        "description": "Flagship Samsung với bút S Pen tích hợp và camera 200MP.",
+        "stock": 25,
+        "rating": 4.7,
+        "sold": 820,
+        "createdAt": "2026-03-30T15:33:13.655Z",
+        "quantity": 1
+      }
+    ],
+    "total": 26990000,
+    "status": "pending",
+    "paymentMethod": "COD",
+    "customerName": "thục",
+    "customerPhone": "0982040104",
+    "address": "2 tầng, Xã Ia Hrú, Huyện Chư Pưh, Tỉnh Gia Lai",
+    "createdAt": "2026-03-30T16:22:39.852Z"
+  }
+]

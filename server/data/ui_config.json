@@ -1,0 +1,74 @@
+{
+  "logoText": "OnlyBuyer",
+  "slogan": "Trải nghiệm mua sắm\nHoàn toàn mới",
+  "primaryColor": "#2563eb",
+  "banners": [
+    {
+      "id": "b1",
+      "title": "Trải nghiệm mua sắm\nHoàn toàn mới",
+      "subtitle": "MỚI RA MẮT",
+      "image": "https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=1600",
+      "ctaText": "Săn Deal Ngay",
+      "ctaLink": "#",
+      "isActive": true
+    },
+    {
+      "id": "b2",
+      "title": "Siêu Phẩm Apple\nMacBook M3 Series",
+      "subtitle": "CẤU HÌNH KHỦNG",
+      "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1600",
+      "ctaText": "Khám Phá Ngay",
+      "ctaLink": "#",
+      "isActive": true
+    },
+    {
+      "id": "b3",
+      "title": "Phụ Kiện Thông Minh\nĐón Đầu Xu Hướng",
+      "subtitle": "GIẢM GIÁ 30%",
+      "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1600",
+      "ctaText": "Mua Ngay",
+      "ctaLink": "#",
+      "isActive": true
+    }
+  ],
+  "promoCard1Title": "SNEAKER\nCOLLECTION",
+  "promoCard1Subtitle": "Giảm 200k đơn đầu",
+  "promoCard1Image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+  "promoCard2Title": "Thời trang\nXU HƯỚNG",
+  "promoCard2Subtitle": "#Streetwear2025",
+  "showBanner": true,
+  "showCategories": true,
+  "showFeaturedProducts": true,
+  "categories": [
+    {
+      "id": "c1",
+      "name": "Điện thoại",
+      "icon": "📱"
+    },
+    {
+      "id": "c2",
+      "name": "Laptop",
+      "icon": "💻"
+    },
+    {
+      "id": "c3",
+      "name": "Quần áo",
+      "icon": "👕"
+    },
+    {
+      "id": "c4",
+      "name": "Giày dép",
+      "icon": "👟"
+    },
+    {
+      "id": "c5",
+      "name": "Đồng hồ",
+      "icon": "⌚"
+    },
+    {
+      "id": "c6",
+      "name": "Phụ kiện",
+      "icon": "🎧"
+    }
+  ]
+}

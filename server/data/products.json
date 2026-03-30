@@ -1,0 +1,63 @@
+[
+  {
+    "id": "p2",
+    "name": "MacBook Air M3",
+    "price": 27990000,
+    "category": "Laptop",
+    "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500",
+    "images": [
+      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500",
+      "https://images.unsplash.com/photo-1611186871348-b1ec696e5237?w=500"
+    ],
+    "description": "Mỏng nhẹ, mạnh mẽ vượt trội với chip M3 thế hệ mới.",
+    "stock": 30,
+    "rating": 4.8,
+    "sold": 450,
+    "createdAt": "2026-03-30T15:33:13.655Z"
+  },
+  {
+    "id": "p3",
+    "name": "Samsung Galaxy S24 Ultra",
+    "price": 26990000,
+    "category": "Điện thoại",
+    "image": "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500",
+    "images": [
+      "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500"
+    ],
+    "description": "Flagship Samsung với bút S Pen tích hợp và camera 200MP.",
+    "stock": 25,
+    "rating": 4.7,
+    "sold": 821,
+    "createdAt": "2026-03-30T15:33:13.655Z"
+  },
+  {
+    "id": "p4",
+    "name": "AirPods Pro 2nd Gen",
+    "price": 6490000,
+    "category": "Phụ kiện",
+    "image": "https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=500",
+    "images": [
+      "https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=500"
+    ],
+    "description": "Chống ồn chủ động thế hệ mới, âm bass sâu, pin 30 giờ.",
+    "stock": 100,
+    "rating": 4.9,
+    "sold": 3202,
+    "createdAt": "2026-03-30T15:33:13.655Z"
+  },
+  {
+    "id": "p5",
+    "name": "Apple Watch Series 9",
+    "price": 11990000,
+    "category": "Đồng hồ",
+    "image": "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500",
+    "images": [
+      "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500"
+    ],
+    "description": "Smartwatch thông minh nhất với chip S9, màn hình luôn sáng.",
+    "stock": 40,
+    "rating": 4.8,
+    "sold": 960,
+    "createdAt": "2026-03-30T15:33:13.655Z"
+  }
+]

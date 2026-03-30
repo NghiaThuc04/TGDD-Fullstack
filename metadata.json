@@ -1,0 +1,5 @@
+{
+  "name": "đồ điện tử shopee",
+  "description": "A unified grocery platform featuring a shared interface with role-based access control (RBAC) for Admins and Customers, implemented with React Context API and simulated backend middleware.",
+  "requestFramePermissions": []
+}
