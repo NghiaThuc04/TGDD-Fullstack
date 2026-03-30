@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const path = require('path');
 const { readTable, writeTable, readConfig, writeConfig, generateId } = require('./db');
 const { protect, adminOnly, staffOrAdmin, JWT_SECRET } = require('./middleware/auth');
 
@@ -418,6 +419,17 @@ app.get('/api/health', (req, res) => {
     message: 'OnlyBuyer API Server đang hoạt động 🚀',
     timestamp: new Date().toISOString()
   });
+});
+
+// ─────────────────────────────────────────────
+// Frontend Static Serving (Chạy giao diện Web mượt mà trên Render)
+// ─────────────────────────────────────────────
+// Phục vụ toàn bộ folder `dist/` sau khi React build ra
+app.use(express.static(path.join(__dirname, '../dist')));
+
+// Các request không phải API sẽ được chuyển về giao diện React (Client-side routing)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
 // ─────────────────────────────────────────────
