@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { HashRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { UIConfigProvider, useUIConfig } from './context/UIConfigContext';
@@ -14,6 +14,14 @@ import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 import AccountSettings from './pages/AccountSettings';
 import AdminEditSidebar from './components/AdminEditSidebar';
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+};
 
 const AppContent: React.FC = () => {
   const { isLoading, user, isAuthenticated } = useAuth();
@@ -71,6 +79,7 @@ const App: React.FC = () => {
       <UIConfigProvider>
         <CartProvider>
           <Router>
+            <ScrollToTop />
             <AppContent />
           </Router>
         </CartProvider>
