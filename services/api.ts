@@ -6,7 +6,7 @@
 
 import { User, Product, Order, UIConfig, Article } from '../types';
 
-const BASE_URL = '/api';
+const BASE_URL = 'https://tgdd-fullstack.onrender.com/api';
 
 // ─────────────────────────────────────────────
 // Helpers
