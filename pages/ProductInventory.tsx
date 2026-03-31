@@ -72,6 +72,43 @@ const ProductInventory: React.FC = () => {
     setImageUrlInput('');
   };
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new window.Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 800;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > MAX_WIDTH) {
+          height = Math.round((height * MAX_WIDTH) / width);
+          width = MAX_WIDTH;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0, width, height);
+        
+        const base64 = canvas.toDataURL('image/jpeg', 0.8);
+        setEditingProduct(prev => {
+          const newImages = [...(prev?.images || []), base64];
+          return { ...prev!, images: newImages, image: prev?.image || newImages[0] };
+        });
+      };
+      if (typeof event.target?.result === 'string') {
+        img.src = event.target.result;
+      }
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
+
   const removeImage = (index: number) => {
     setEditingProduct(prev => {
       const newImages = (prev?.images || []).filter((_, i) => i !== index);
@@ -217,11 +254,17 @@ const ProductInventory: React.FC = () => {
 
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Giá bán (VNĐ) *</label>
-                  <input required type="number" min="0" placeholder="Nhập giá tiền..."
-                    className="w-full px-5 py-3.5 bg-gray-50 rounded-2xl outline-none border-2 border-transparent focus:border-primary font-bold transition-all text-sm"
-                    value={editingProduct.price || ''}
-                    onChange={e => setEditingProduct({ ...editingProduct, price: Number(e.target.value) })}
-                  />
+                  <div className="relative">
+                    <input required type="text" placeholder="Nhập giá tiền (ví dụ: 37.790.000)..."
+                      className="w-full pl-5 pr-10 py-3.5 bg-gray-50 rounded-2xl outline-none border-2 border-transparent focus:border-primary font-black text-primary transition-all text-sm"
+                      value={editingProduct.price ? editingProduct.price.toLocaleString('vi-VN') : ''}
+                      onChange={e => {
+                        const rawVal = e.target.value.replace(/\D/g, '');
+                        setEditingProduct({ ...editingProduct, price: rawVal ? Number(rawVal) : 0 });
+                      }}
+                    />
+                    <span className="absolute right-5 top-1/2 -translate-y-1/2 font-black text-gray-400">đ</span>
+                  </div>
                 </div>
 
                 <div className="space-y-1.5">
@@ -281,9 +324,24 @@ const ProductInventory: React.FC = () => {
                 </div>
               </div>
 
-              {/* Right: hình ảnh qua URL */}
+              {/* Right: hình ảnh */}
               <div className="space-y-4">
-                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Hình ảnh sản phẩm (URL)</label>
+                <div className="flex justify-between items-center bg-primary/5 p-4 rounded-3xl border border-primary/20">
+                  <div>
+                    <span className="text-[12px] font-black text-primary uppercase tracking-widest block">Tải Ảnh Từ App</span>
+                    <span className="text-[9px] font-bold text-gray-500 italic mt-0.5 block">JPG, PNG (Tối ưu hóa dưới 100KB)</span>
+                  </div>
+                  <label className="cursor-pointer bg-primary text-white px-5 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-700 shadow-xl shadow-primary/30 transition-all hover:-translate-y-1 active:scale-95">
+                    📤 CHỌN ẢNH NGAY
+                    <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+                  </label>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="h-px bg-gray-100 flex-grow"></div>
+                  <span className="text-[10px] font-black text-gray-300 uppercase italic">HOẶC DÙNG LINK HTTP</span>
+                  <div className="h-px bg-gray-100 flex-grow"></div>
+                </div>
 
                 {/* URL Input */}
                 <div className="flex gap-2">
