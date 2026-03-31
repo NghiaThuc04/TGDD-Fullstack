@@ -27,9 +27,9 @@ const Navbar: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-3 md:py-4">
-        <div className="flex items-center justify-between gap-3 md:gap-8">
+        <div className="flex flex-wrap items-center justify-between gap-3 md:gap-8">
           {/* Logo Section */}
-          <Link to="/" className="flex items-center gap-2 md:gap-3 group shrink-0">
+          <Link to="/" className="flex items-center gap-2 md:gap-3 group shrink-0 order-1">
             <div className="relative w-9 h-9 md:w-11 md:h-11 flex items-center justify-center">
               <div className="absolute inset-0 bg-primary rounded-xl md:rounded-2xl rotate-6 opacity-20 transition-transform group-hover:rotate-12"></div>
               <div className="absolute inset-0 bg-primary rounded-xl md:rounded-2xl shadow-lg shadow-primary"></div>
@@ -43,16 +43,16 @@ const Navbar: React.FC = () => {
             </div>
           </Link>
 
-          {/* Search Bar - Hidden on very small screens, or resized */}
-          <div className="flex-grow max-w-xl relative">
+          {/* Search Bar - Chuyển xuống dưới cùng trên Mobile màn mỏng */}
+          <div className="w-full md:flex-grow max-w-xl relative order-3 md:order-2 mt-2 md:mt-0">
             <input 
               type="text" 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Tìm kiếm..."
-              className="w-full bg-gray-50 border border-gray-200 rounded-xl md:rounded-2xl px-4 py-2 md:py-3 focus:border-primary transition-all outline-none text-xs md:text-sm font-medium"
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl md:rounded-2xl px-4 py-3 md:py-3 focus:border-primary transition-all outline-none text-xs md:text-sm font-medium"
             />
-            <button className="absolute right-2.5 top-1.5 md:top-2.5 bg-primary text-white p-1.5 md:p-2 rounded-lg md:rounded-xl shadow-md">
+            <button className="absolute right-2.5 top-2 md:top-2.5 bg-primary text-white p-1.5 md:p-2 rounded-lg md:rounded-xl shadow-md">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 md:h-5 md:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
@@ -60,7 +60,7 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Icons Section */}
-          <div className="flex items-center gap-3 md:gap-6">
+          <div className="flex items-center gap-3 md:gap-6 order-2 md:order-3 ml-auto md:ml-0">
             <Link to="/cart" className="relative p-1.5 md:p-2 text-gray-700 hover:text-primary transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 md:h-7 md:w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />

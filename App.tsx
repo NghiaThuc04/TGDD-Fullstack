@@ -44,7 +44,7 @@ const AppContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F9FAFB]">
+    <div className="min-h-screen flex flex-col bg-[#F9FAFB] max-w-[100vw] overflow-x-hidden">
       {/* Hide Navbar in Admin Panel for cleaner look */}
       <Routes>
         <Route path="/admin/*" element={null} />

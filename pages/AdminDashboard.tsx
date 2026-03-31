@@ -29,9 +29,9 @@ const AdminDashboard: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row overflow-x-hidden">
       {/* Sidebar */}
-      <div className="w-72 bg-gray-900 text-white flex flex-col shrink-0">
+      <div className="w-full md:w-72 bg-gray-900 text-white flex-col shrink-0 flex">
         <div className="p-8 border-b border-white/10">
           <Link 
             to="/" 
@@ -43,7 +43,7 @@ const AdminDashboard: React.FC = () => {
           <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mt-1">Hệ thống quản trị</p>
         </div>
         
-        <nav className="flex-grow p-4 space-y-2 mt-4">
+        <nav className="p-4 md:mt-4 flex overflow-x-auto md:flex-col gap-2 md:gap-2 custom-scrollbar">
           {menuItems.filter(item => item.roles.includes(user?.role || '')).map(item => (
             <button
               key={item.id}
@@ -52,12 +52,12 @@ const AdminDashboard: React.FC = () => {
                 activeTab === item.id ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-gray-400 hover:bg-white/5'
               }`}
             >
-              {item.label}
+              <span className="whitespace-nowrap">{item.label}</span>
             </button>
           ))}
         </nav>
 
-        <div className="p-6 border-t border-white/10">
+        <div className="hidden md:block p-6 border-t border-white/10 mt-auto">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center font-black">
               {user?.name.charAt(0)}
@@ -71,7 +71,7 @@ const AdminDashboard: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-grow overflow-y-auto max-h-screen p-10 custom-scrollbar">
+      <div className="flex-grow overflow-y-auto max-h-screen p-4 md:p-10 custom-scrollbar w-full">
         {activeTab === 'orders' && <OrderManagement />}
         {activeTab === 'staff' && <StaffManagement />}
         {activeTab === 'webinfo' && <WebInfoEditor />}
