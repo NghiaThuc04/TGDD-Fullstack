@@ -34,11 +34,11 @@ const ProductDetailPage: React.FC = () => {
   const galleryImages = product.images && product.images.length > 0 ? product.images : [product.image];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
-      <div className="bg-white rounded-[40px] p-8 md:p-12 shadow-sm border border-gray-50 grid grid-cols-1 lg:grid-cols-2 gap-16">
+    <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-50 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
         {/* Left: Product Gallery */}
-        <div className="space-y-6">
-          <div className="aspect-[4/5] rounded-[32px] overflow-hidden border border-gray-100 shadow-inner group">
+        <div className="space-y-4">
+          <div className="aspect-[4/5] rounded-2xl overflow-hidden border border-gray-100 shadow-inner group">
             <img src={activeImage} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={product.name} />
           </div>
           <div className="grid grid-cols-4 md:grid-cols-5 gap-4">
@@ -46,7 +46,7 @@ const ProductDetailPage: React.FC = () => {
                <div 
                   key={i} 
                   onClick={() => setActiveImage(img)}
-                  className={`aspect-square rounded-2xl overflow-hidden border-2 cursor-pointer transition-all ${activeImage === img ? 'border-blue-600 scale-95 shadow-lg' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                  className={`aspect-square rounded-xl overflow-hidden border-2 cursor-pointer transition-all ${activeImage === img ? 'border-primary scale-95 shadow-md' : 'border-transparent opacity-60 hover:opacity-100'}`}
                >
                  <img src={img} className="w-full h-full object-cover" alt={`view-${i}`} />
                </div>
@@ -56,75 +56,75 @@ const ProductDetailPage: React.FC = () => {
 
         {/* Right: Product Details */}
         <div className="flex flex-col">
-          <nav className="text-[10px] font-black text-gray-400 mb-6 flex gap-2 uppercase tracking-widest">
-            <span className="hover:text-blue-600 cursor-pointer transition-colors" onClick={() => navigate('/')}>TRANG CHỦ</span>
+          <nav className="text-[9px] font-black text-gray-400 mb-4 flex gap-2 uppercase tracking-widest">
+            <span className="hover:text-primary cursor-pointer transition-colors" onClick={() => navigate('/')}>TRANG CHỦ</span>
             <span>/</span>
-            <span className="hover:text-blue-600 cursor-pointer transition-colors">{product.category}</span>
+            <span className="hover:text-primary cursor-pointer transition-colors">{product.category}</span>
             <span>/</span>
-            <span className="text-blue-600">{product.name}</span>
+            <span className="text-primary">{product.name}</span>
           </nav>
           
-          <h1 className="text-4xl font-black text-gray-900 leading-[1.2] mb-6">{product.name}</h1>
+          <h1 className="text-3xl lg:text-4xl font-black text-gray-900 leading-[1.2] mb-4">{product.name}</h1>
           
-          <div className="flex items-center gap-6 mb-8">
+          <div className="flex items-center gap-4 mb-6">
             <div className="flex items-center gap-1.5 bg-yellow-50 px-3 py-1.5 rounded-xl border border-yellow-100">
               <span className="text-yellow-600 font-black">{product.rating}</span>
               <span className="text-yellow-500 text-xs">★★★★★</span>
             </div>
             <div className="text-sm font-bold text-gray-400"><span className="text-gray-900">{product.sold.toLocaleString()}</span> ĐÃ BÁN</div>
             {user?.role === 'admin' && (
-              <span className="bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-[10px] font-black border border-blue-200 uppercase">QUẢN TRỊ VIÊN</span>
+              <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-[9px] font-black border border-blue-200 uppercase">QUẢN TRỊ VIÊN</span>
             )}
           </div>
 
-          <div className="p-8 bg-blue-50 rounded-[32px] mb-10 flex flex-col justify-center border border-blue-100">
-            <div className="flex items-baseline gap-4">
-              <span className="text-5xl font-black text-blue-700">{product.price.toLocaleString()}đ</span>
-              <span className="text-gray-400 line-through font-bold text-xl">{(product.price * 1.3).toLocaleString()}đ</span>
+          <div className="p-6 bg-primary/5 rounded-2xl mb-8 flex flex-col justify-center border border-primary/10">
+            <div className="flex items-baseline gap-3">
+              <span className="text-4xl font-black text-primary">{product.price.toLocaleString()}đ</span>
+              <span className="text-gray-400 line-through font-bold text-lg">{(product.price * 1.3).toLocaleString()}đ</span>
             </div>
-            <div className="mt-4 flex gap-3">
-               <span className="bg-orange-500 text-white px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest italic">FLASH SALE -30%</span>
-               <span className="bg-blue-600 text-white px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest italic">FREESHIP EXTRA</span>
+            <div className="mt-3 flex gap-2">
+               <span className="bg-orange-500 text-white px-2 py-1 rounded text-[9px] font-black uppercase tracking-widest italic">FLASH SALE -30%</span>
+               <span className="bg-primary text-white px-2 py-1 rounded text-[9px] font-black uppercase tracking-widest italic">FREESHIP EXTRA</span>
             </div>
           </div>
 
-          <div className="space-y-10">
-            <div className="flex items-center gap-10">
-              <span className="text-xs font-black text-gray-400 uppercase tracking-widest">Số lượng</span>
-              <div className="flex items-center bg-gray-50 p-1 rounded-2xl border border-gray-100">
-                <button onClick={() => setQty(Math.max(1, qty - 1))} className="w-12 h-12 flex items-center justify-center font-black text-xl hover:text-blue-600 transition-colors">-</button>
-                <input type="text" value={qty} readOnly className="w-14 text-center text-lg font-black bg-transparent outline-none" />
-                <button onClick={() => setQty(qty + 1)} className="w-12 h-12 flex items-center justify-center font-black text-xl hover:text-blue-600 transition-colors">+</button>
+          <div className="space-y-6">
+            <div className="flex items-center gap-6">
+              <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Số lượng</span>
+              <div className="flex items-center bg-gray-50 p-1 rounded-xl border border-gray-100">
+                <button onClick={() => setQty(Math.max(1, qty - 1))} className="w-10 h-10 flex items-center justify-center font-black text-lg hover:text-primary transition-colors">-</button>
+                <input type="text" value={qty} readOnly className="w-10 text-center text-sm font-black bg-transparent outline-none" />
+                <button onClick={() => setQty(qty + 1)} className="w-10 h-10 flex items-center justify-center font-black text-lg hover:text-primary transition-colors">+</button>
               </div>
-              <span className="text-[10px] font-black text-gray-300 uppercase italic">FREESHIP TOÀN QUỐC</span>
+              <span className="text-[9px] font-black text-gray-300 uppercase italic">FREESHIP TOÀN QUỐC</span>
             </div>
 
-            <div className="flex gap-4 pt-4">
+            <div className="flex gap-3 pt-2">
               <button 
                 onClick={() => addToCart(product, qty)}
-                className="flex-1 border-2 border-blue-600 text-blue-600 py-5 rounded-2xl font-black uppercase text-sm hover:bg-blue-50 transition-all flex items-center justify-center gap-3"
+                className="flex-1 border-2 border-primary text-primary py-3.5 rounded-xl font-black uppercase text-[11px] hover:bg-primary/5 transition-all flex items-center justify-center gap-2"
               >
                 🛒 THÊM VÀO GIỎ
               </button>
               <button 
                 onClick={() => { addToCart(product, qty); navigate('/cart'); }}
-                className="flex-1 bg-blue-600 text-white py-5 rounded-2xl font-black uppercase text-sm hover:bg-blue-700 shadow-2xl shadow-blue-100 transition-all transform active:scale-95"
+                className="flex-[1.5] bg-primary text-white py-3.5 rounded-xl font-black uppercase text-[11px] hover:bg-blue-700 shadow-xl shadow-primary/20 transition-all transform active:scale-95"
               >
                 MUA NGAY ⚡
               </button>
             </div>
           </div>
 
-          <div className="mt-16 border-t border-gray-100 pt-10">
-            <h3 className="text-lg font-black text-gray-900 mb-6 uppercase tracking-widest">Mô tả sản phẩm</h3>
-            <p className="text-gray-500 text-sm leading-loose font-medium whitespace-pre-line">{product.description}</p>
+          <div className="mt-10 border-t border-gray-100 pt-8">
+            <h3 className="text-sm font-black text-gray-900 mb-4 uppercase tracking-widest">Mô tả sản phẩm</h3>
+            <p className="text-gray-500 text-[13px] leading-relaxed font-medium whitespace-pre-line">{product.description}</p>
           </div>
 
           {/* ─── TECHNICAL SPECS TABLE ─── */}
           {product.specs && (
-            <div className="mt-12 border-t border-gray-100 pt-10">
-              <div className="flex justify-between items-end mb-6">
-                <h3 className="text-xl md:text-2xl font-black text-gray-900 tracking-tight">Thông số kỹ thuật</h3>
+            <div className="mt-8 border-t border-gray-100 pt-8">
+              <div className="flex justify-between items-end mb-4">
+                <h3 className="text-lg md:text-xl font-black text-gray-900 tracking-tight">Thông số kỹ thuật</h3>
                 <button className="text-sm font-bold text-primary hover:underline flex items-center gap-1 transition-all">
                   Xem tất cả <span className="text-lg leading-none">›</span>
                 </button>
