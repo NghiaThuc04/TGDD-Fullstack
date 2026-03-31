@@ -78,6 +78,7 @@ export interface Order {
   transferProvider?: 'Momo' | 'VNPay';
   customerPhone?: string;
   customerName?: string;
+  handlerId?: string;
 }
 
 export interface Article {
