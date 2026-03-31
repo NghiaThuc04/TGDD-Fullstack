@@ -236,104 +236,99 @@ const OrderManagement: React.FC = () => {
 
             {/* Modal Body */}
             <div className="flex-grow overflow-y-auto p-6 md:p-10 space-y-8">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* TOP: Thông tin giao hàng */}
+              <div className="bg-white rounded-3xl border border-gray-100 p-6 md:p-8 shadow-sm space-y-6">
+                 <div className="flex justify-between items-center border-b pb-4">
+                   <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest">Thông tin giao hàng</h3>
+                   {!isEditing ? (
+                      <button onClick={() => setIsEditing(true)} className="text-[10px] font-black text-primary hover:underline uppercase px-4 py-2 bg-primary/10 rounded-xl">Sửa thông tin</button>
+                   ) : (
+                      <button onClick={() => setIsEditing(false)} className="text-[10px] font-black text-red-500 hover:bg-red-50 bg-white border border-red-100 uppercase px-4 py-2 rounded-xl transition-all">Hủy sửa</button>
+                   )}
+                 </div>
 
+                 {isEditing ? (
+                   <div className="space-y-4">
+                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                       <div className="space-y-1.5">
+                         <label className="text-[10px] font-black text-gray-400 uppercase">Người nhận</label>
+                         <input className="w-full px-4 py-2.5 bg-gray-50 rounded-xl outline-none focus:border-primary border border-transparent font-bold text-xs" 
+                           value={editForm.customerName} onChange={e => setEditForm({...editForm, customerName: e.target.value})} placeholder="Tên" />
+                       </div>
+                       <div className="space-y-1.5">
+                         <label className="text-[10px] font-black text-gray-400 uppercase">Điện thoại</label>
+                         <input type="tel" maxLength={10} className="w-full px-4 py-2.5 bg-gray-50 rounded-xl outline-none focus:border-primary border border-transparent font-bold text-xs" 
+                           value={editForm.customerPhone} onChange={e => setEditForm({...editForm, customerPhone: e.target.value.replace(/\D/g, '').slice(0, 10)})} placeholder="SĐT" />
+                       </div>
+                       <div className="space-y-1.5 lg:col-span-2">
+                         <label className="text-[10px] font-black text-gray-400 uppercase">Thanh toán</label>
+                         <select className="w-full px-4 py-2.5 bg-gray-50 rounded-xl outline-none focus:border-primary border border-transparent font-bold text-xs" 
+                           value={editForm.paymentMethod} onChange={e => setEditForm({...editForm, paymentMethod: e.target.value})}>
+                           <option value="COD">COD - Tiền mặt</option>
+                           <option value="Transfer">Chuyển khoản</option>
+                         </select>
+                       </div>
+                     </div>
+                     <div className="space-y-1.5">
+                       <label className="text-[10px] font-black text-gray-400 uppercase">Địa chỉ</label>
+                       <textarea className="w-full px-4 py-2.5 bg-gray-50 rounded-xl outline-none focus:border-primary border border-transparent font-bold text-xs h-20 resize-none" 
+                         value={editForm.address} onChange={e => setEditForm({...editForm, address: e.target.value})} placeholder="Địa chỉ chi tiết" />
+                     </div>
+                     <div className="flex justify-end pt-2">
+                       <button disabled={!!processingId} onClick={handleSaveEdit} 
+                         className="bg-primary text-white px-8 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest disabled:opacity-50 hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20">
+                         {processingId ? 'Đang lưu...' : 'Lưu thay đổi'}
+                       </button>
+                     </div>
+                   </div>
+                 ) : (
+                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                     <div className="flex items-center gap-4">
+                       <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-xl shrink-0">👤</div>
+                       <div><p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Người nhận</p><p className="text-sm font-black text-gray-900 mt-0.5">{selectedOrder.customerName}</p></div>
+                     </div>
+                     <div className="flex items-center gap-4">
+                       <div className="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center text-xl shrink-0">📞</div>
+                       <div><p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Điện thoại</p><p className="text-sm font-black text-gray-900 mt-0.5">{selectedOrder.customerPhone}</p></div>
+                     </div>
+                     <div className="flex items-center gap-4">
+                       <div className="w-12 h-12 bg-purple-50 rounded-2xl flex items-center justify-center text-xl shrink-0">💳</div>
+                       <div><p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Thanh toán</p><p className="text-xs font-black text-gray-900 mt-0.5">{selectedOrder.paymentMethod === 'Transfer' ? selectedOrder.transferProvider : 'COD - Tiền mặt'}</p></div>
+                     </div>
+                     <div className="flex items-start gap-4 col-span-1 md:col-span-2 lg:col-span-1">
+                       <div className="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center text-xl shrink-0">📍</div>
+                       <div><p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1">Địa chỉ giao hàng</p><p className="text-xs font-bold text-gray-600 leading-relaxed">{selectedOrder.address}</p></div>
+                     </div>
+                   </div>
+                 )}
+              </div>
+
+              {/* BOTTOM: Grid 2 columns */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Left: Sản phẩm */}
                 <div className="lg:col-span-2 space-y-4">
                   <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest border-b pb-3">Sản phẩm đặt mua ({selectedOrder.items.length})</h3>
-                  {selectedOrder.items.map(item => (
-                    <div key={item.id} className="flex items-center gap-4 bg-gray-50/50 p-4 rounded-2xl border border-gray-100 hover:bg-white hover:shadow-md transition-all">
-                      <div className="relative shrink-0">
-                        <img src={item.image} className="w-16 h-16 rounded-xl object-cover border border-gray-200" />
-                        <span className="absolute -top-2 -right-2 bg-primary text-white text-[9px] font-black w-6 h-6 rounded-full flex items-center justify-center border-2 border-white">
-                          {item.quantity}
-                        </span>
+                  <div className="space-y-3">
+                    {selectedOrder.items.map(item => (
+                      <div key={item.id} className="flex items-center gap-4 bg-gray-50/50 p-4 rounded-2xl border border-gray-100 hover:bg-white hover:shadow-md transition-all">
+                        <div className="relative shrink-0">
+                          <img src={item.image} className="w-16 h-16 rounded-xl object-cover border border-gray-200" />
+                          <span className="absolute -top-2 -right-2 bg-primary text-white text-[9px] font-black w-6 h-6 rounded-full flex items-center justify-center border-2 border-white">
+                            {item.quantity}
+                          </span>
+                        </div>
+                        <div className="flex-grow">
+                          <p className="text-xs font-black text-gray-900">{item.name}</p>
+                          <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{item.category}</p>
+                          <p className="text-xs font-black text-primary mt-1">{item.price.toLocaleString()}đ × {item.quantity} = {(item.price * item.quantity).toLocaleString()}đ</p>
+                        </div>
                       </div>
-                      <div className="flex-grow">
-                        <p className="text-xs font-black text-gray-900">{item.name}</p>
-                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{item.category}</p>
-                        <p className="text-xs font-black text-primary mt-1">{item.price.toLocaleString()}đ × {item.quantity} = {(item.price * item.quantity).toLocaleString()}đ</p>
-                      </div>
-                    </div>
-                  ))}
-
-                  {/* Tổng tiền */}
-                  <div className="bg-gray-900 rounded-3xl p-6 text-white">
-                    <div className="flex justify-between text-xs font-bold text-white/50 uppercase mb-2"><span>Tạm tính</span><span className="text-white">{selectedOrder.total.toLocaleString()}đ</span></div>
-                    <div className="flex justify-between text-xs font-bold text-white/50 uppercase mb-4"><span>Vận chuyển</span><span className="text-green-400 italic">FREESHIP</span></div>
-                    <hr className="border-white/10 mb-4" />
-                    <div className="flex justify-between items-baseline">
-                      <span className="text-sm font-black uppercase italic">Tổng thanh toán</span>
-                      <span className="text-3xl font-black text-primary tracking-tight italic">{selectedOrder.total.toLocaleString()}đ</span>
-                    </div>
+                    ))}
                   </div>
                 </div>
 
-                {/* Right: Thông tin + Hành động */}
+                {/* Right: Hành động + Tạm tính (nhỏ gộp lại) */}
                 <div className="space-y-6">
-                  {/* Khách hàng */}
-                  <div className="bg-white rounded-3xl border border-gray-100 p-6 shadow-sm space-y-4">
-                    <div className="flex justify-between items-center border-b pb-3">
-                      <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Thông tin giao hàng</h3>
-                      {!isEditing ? (
-                         <button onClick={() => setIsEditing(true)} className="text-[10px] font-black text-primary hover:underline uppercase">Sửa</button>
-                      ) : (
-                         <button onClick={() => setIsEditing(false)} className="text-[10px] font-black text-gray-400 hover:text-gray-600 uppercase">Hủy</button>
-                      )}
-                    </div>
-                    
-                    {isEditing ? (
-                      <div className="space-y-4">
-                        <div className="space-y-1.5">
-                          <label className="text-[10px] font-black text-gray-400 uppercase">Người nhận</label>
-                          <input className="w-full px-4 py-2.5 bg-gray-50 rounded-xl outline-none focus:border-primary border border-transparent font-bold text-xs" 
-                            value={editForm.customerName} onChange={e => setEditForm({...editForm, customerName: e.target.value})} placeholder="Tên" />
-                        </div>
-                        <div className="space-y-1.5">
-                          <label className="text-[10px] font-black text-gray-400 uppercase">Điện thoại</label>
-                          <input type="tel" maxLength={10} className="w-full px-4 py-2.5 bg-gray-50 rounded-xl outline-none focus:border-primary border border-transparent font-bold text-xs" 
-                            value={editForm.customerPhone} onChange={e => setEditForm({...editForm, customerPhone: e.target.value.replace(/\D/g, '').slice(0, 10)})} placeholder="SĐT" />
-                        </div>
-                        <div className="space-y-1.5">
-                          <label className="text-[10px] font-black text-gray-400 uppercase">Địa chỉ</label>
-                          <textarea className="w-full px-4 py-2.5 bg-gray-50 rounded-xl outline-none focus:border-primary border border-transparent font-bold text-xs h-20 resize-none" 
-                            value={editForm.address} onChange={e => setEditForm({...editForm, address: e.target.value})} placeholder="Địa chỉ" />
-                        </div>
-                        <div className="space-y-1.5">
-                          <label className="text-[10px] font-black text-gray-400 uppercase">Thanh toán</label>
-                          <select className="w-full px-4 py-2.5 bg-gray-50 rounded-xl outline-none focus:border-primary border border-transparent font-bold text-xs" 
-                            value={editForm.paymentMethod} onChange={e => setEditForm({...editForm, paymentMethod: e.target.value})}>
-                            <option value="COD">COD - Tiền mặt</option>
-                            <option value="Transfer">Chuyển khoản</option>
-                          </select>
-                        </div>
-                        <button disabled={!!processingId} onClick={handleSaveEdit} 
-                          className="w-full bg-primary text-white py-3 rounded-xl font-black text-[10px] uppercase tracking-widest disabled:opacity-50">
-                          {processingId ? 'Đang lưu...' : 'Lưu thông tin'}
-                        </button>
-                      </div>
-                    ) : (
-                      <>
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-lg">👤</div>
-                          <div><p className="text-[10px] text-gray-400 font-bold">Người nhận</p><p className="text-sm font-black text-gray-900">{selectedOrder.customerName}</p></div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center text-lg">📞</div>
-                          <div><p className="text-[10px] text-gray-400 font-bold">Điện thoại</p><p className="text-sm font-black text-gray-900">{selectedOrder.customerPhone}</p></div>
-                        </div>
-                        <div className="flex items-start gap-3">
-                          <div className="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center text-lg shrink-0">📍</div>
-                          <div><p className="text-[10px] text-gray-400 font-bold">Địa chỉ</p><p className="text-xs font-bold text-gray-600 leading-relaxed">{selectedOrder.address}</p></div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center text-lg">💳</div>
-                          <div><p className="text-[10px] text-gray-400 font-bold">Thanh toán</p><p className="text-sm font-black text-gray-900">{selectedOrder.paymentMethod === 'Transfer' ? selectedOrder.transferProvider : 'COD - Tiền mặt'}</p></div>
-                        </div>
-                      </>
-                    )}
-                  </div>
-
                   {/* Hành động */}
                   <div className="bg-white rounded-3xl border border-gray-100 p-6 shadow-sm space-y-3">
                     <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest border-b pb-3">Cập nhật trạng thái</h3>
@@ -359,22 +354,46 @@ const OrderManagement: React.FC = () => {
                     )}
                   </div>
 
-                  {/* Xóa đơn hàng */}
-                  {confirmDelete === selectedOrder.id ? (
-                    <div className="bg-red-50 rounded-2xl p-4 border border-red-100 space-y-3">
-                      <p className="text-xs font-black text-red-600 text-center uppercase tracking-widest">⚠️ Xác nhận xóa vĩnh viễn?</p>
-                      <div className="flex gap-2">
-                        <button onClick={() => setConfirmDelete(null)} className="flex-1 bg-white border border-gray-200 py-2 rounded-xl font-black text-xs text-gray-500 hover:bg-gray-50 transition-all">Hủy</button>
-                        <button disabled={!!processingId} onClick={() => handleDelete(selectedOrder.id)}
-                          className="flex-1 bg-red-500 text-white py-2 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-red-600 transition-all disabled:opacity-50"
-                        >Xóa ngay</button>
-                      </div>
+                  {/* Tổng tiền thu nhỏ đuợc đưa xuống dưới */}
+                  <div className="bg-gray-900 rounded-3xl p-5 text-white shadow-xl shadow-gray-900/10 hidden lg:block">
+                    <div className="flex justify-between text-[11px] font-bold text-white/50 mb-2"><span>TẠM TÍNH</span><span className="text-white">{selectedOrder.total.toLocaleString()}đ</span></div>
+                    <div className="flex justify-between text-[11px] font-bold text-white/50 mb-4"><span>VẬN CHUYỂN</span><span className="text-green-400 uppercase italic">Freeship</span></div>
+                    <hr className="border-white/10 mb-4" />
+                    <div className="flex flex-col gap-1 items-end">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-white/50">Tổng thanh toán</span>
+                      <span className="text-2xl font-black text-primary tracking-tight italic">{selectedOrder.total.toLocaleString()}đ</span>
                     </div>
-                  ) : (
-                    <button onClick={() => setConfirmDelete(selectedOrder.id)}
-                      className="w-full border-2 border-dashed border-red-200 text-red-400 py-2.5 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:border-red-400 hover:text-red-600 transition-all"
-                    >🗑 Xóa đơn hàng này</button>
-                  )}
+                  </div>
+                  
+                  {/* Tổng tiền dành cho Mobile (nếu lg:block ẩn trên mobile) */}
+                  <div className="bg-gray-900 rounded-3xl p-5 text-white shadow-xl shadow-gray-900/10 lg:hidden">
+                    <div className="flex justify-between text-[11px] font-bold text-white/50 mb-2"><span>TẠM TÍNH</span><span className="text-white">{selectedOrder.total.toLocaleString()}đ</span></div>
+                    <div className="flex justify-between text-[11px] font-bold text-white/50 mb-4"><span>VẬN CHUYỂN</span><span className="text-green-400 uppercase italic">Freeship</span></div>
+                    <hr className="border-white/10 mb-4" />
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-[10px] font-black uppercase tracking-widest italic text-white/50">Tổng</span>
+                      <span className="text-2xl font-black text-primary tracking-tight italic">{selectedOrder.total.toLocaleString()}đ</span>
+                    </div>
+                  </div>
+
+                  {/* Xóa đơn hàng */}
+                  <div className="pt-2">
+                    {confirmDelete === selectedOrder.id ? (
+                      <div className="bg-red-50 rounded-2xl p-4 border border-red-100 space-y-3">
+                        <p className="text-xs font-black text-red-600 text-center uppercase tracking-widest">⚠️ Xác nhận xóa?</p>
+                        <div className="flex gap-2">
+                          <button onClick={() => setConfirmDelete(null)} className="flex-1 bg-white border border-gray-200 py-2 rounded-xl font-black text-[10px] text-gray-500 hover:bg-gray-50 transition-all uppercase">Hủy</button>
+                          <button disabled={!!processingId} onClick={() => handleDelete(selectedOrder.id)}
+                            className="flex-1 bg-red-500 text-white py-2 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-red-600 transition-all disabled:opacity-50"
+                          >Xóa ngay</button>
+                        </div>
+                      </div>
+                    ) : (
+                      <button onClick={() => setConfirmDelete(selectedOrder.id)}
+                        className="w-full bg-red-50/50 text-red-400 py-2.5 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-red-50 hover:text-red-500 transition-all border border-dashed border-red-200"
+                      >🗑 Xóa đơn hàng này</button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
