@@ -220,6 +220,7 @@ const OrderManagement: React.FC = () => {
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
           <div className="absolute inset-0 bg-gray-900/70 backdrop-blur-md" onClick={() => setSelectedOrder(null)} />
 
+          <div className="relative bg-white w-full max-w-5xl max-h-[92vh] rounded-[40px] shadow-2xl overflow-hidden flex flex-col animate-in zoom-in fade-in duration-300">
             {/* Modal Header */}
             <div className="p-6 md:p-10 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100 flex justify-between items-center shrink-0">
               <div>
@@ -398,6 +399,7 @@ const OrderManagement: React.FC = () => {
                   </div>
                 </div>
               </div>
+            </div>
           </div>
         </div>
       )}

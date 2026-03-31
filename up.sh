@@ -18,3 +18,9 @@ echo "🚀 Đẩy code lên trời..."
 git push
 
 echo "✅ Hoàn tất thần chú!"
+
+
+
+git add .
+git commit -m "làm lại giao diện chi tiết đơn hàng"
+git push -u origin main
