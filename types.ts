@@ -49,6 +49,7 @@ export interface UIConfig {
 
 export interface Product {
   id: string;
+  slug?: string; // Đoạn mã thân thiện URL (VD: iPhone17ProMax)
   name: string;
   price: number;
   category: string;

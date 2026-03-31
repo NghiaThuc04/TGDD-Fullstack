@@ -122,7 +122,9 @@ app.get('/api/products', async (req, res) => {
 
 app.get('/api/products/:id', async (req, res) => {
   try {
-    const product = await Product.findOne({ id: req.params.id });
+    const product = await Product.findOne({
+      $or: [{ id: req.params.id }, { slug: req.params.id }]
+    });
     if (!product) return res.status(404).json({ message: 'Không thấy' });
     res.json(product);
   } catch(e) { res.status(500).json({ message: 'Lỗi' }); }

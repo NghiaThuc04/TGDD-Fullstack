@@ -241,7 +241,7 @@ const HomePage: React.FC = () => {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6">
               {filteredProducts.map(product => (
                 <div key={product.id} className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-2xl transition-all group flex flex-col relative z-10">
-                  <Link to={`/product/${product.id}`} className="flex-grow">
+                  <Link to={`/product/${product.slug || product.id}`} className="flex-grow">
                     <div className="aspect-[3/4] relative overflow-hidden bg-gray-50">
                       <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div className="absolute top-2 left-2 flex flex-col gap-1">

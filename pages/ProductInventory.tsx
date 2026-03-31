@@ -42,9 +42,18 @@ const ProductInventory: React.FC = () => {
     e.preventDefault();
     if (!editingProduct) return;
     setSaving(true);
+    
+    // Tạo định dạng URL sạch từ tên: "iPhone 17 Pro Max" -> "iPhone17ProMax"
+    const generateSlug = (name?: string) => {
+      if (!name) return undefined;
+      let s = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      return s.replace(/[^a-zA-Z0-9]/g, "");
+    };
+
     try {
       await saveProductApi({
         ...editingProduct,
+        slug: generateSlug(editingProduct.name),
         id: editingProduct.id || `p${Date.now()}`,
         sold: editingProduct.sold || 0,
         rating: editingProduct.rating || 5,
