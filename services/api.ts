@@ -147,6 +147,12 @@ export const saveProductApi = async (product: Product): Promise<void> => {
   });
 };
 
+export const deleteProductApi = async (id: string): Promise<void> => {
+  await apiFetch(`/products/${id}`, {
+    method: 'DELETE',
+  });
+};
+
 // ─────────────────────────────────────────────
 // ORDER API
 // ─────────────────────────────────────────────

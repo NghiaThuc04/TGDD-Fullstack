@@ -1,18 +1,9 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { getProductsApi, saveProductApi } from '../services/api';
+import { getProductsApi, saveProductApi, deleteProductApi } from '../services/api';
 import { Product } from '../types';
 import { useUIConfig } from '../context/UIConfigContext';
 import { useAuth } from '../context/AuthContext';
-
-const deleteProductFetch = async (id: string): Promise<void> => {
-  const token = localStorage.getItem('ob_jwt_token');
-  const res = await fetch(`/api/products/${id}`, {
-    method: 'DELETE',
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  if (!res.ok) throw new Error('Xóa thất bại');
-};
 
 const ProductInventory: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -128,7 +119,7 @@ const ProductInventory: React.FC = () => {
   const handleDelete = async (id: string) => {
     setDeletingId(id);
     try {
-      await deleteProductFetch(id);
+      await deleteProductApi(id);
       setProducts(prev => prev.filter(p => p.id !== id));
     } catch (err) {
       alert('Lỗi xóa sản phẩm!');
