@@ -119,6 +119,54 @@ const ProductDetailPage: React.FC = () => {
             <h3 className="text-lg font-black text-gray-900 mb-6 uppercase tracking-widest">Mô tả sản phẩm</h3>
             <p className="text-gray-500 text-sm leading-loose font-medium whitespace-pre-line">{product.description}</p>
           </div>
+
+          {/* ─── TECHNICAL SPECS TABLE ─── */}
+          {product.specs && (
+            <div className="mt-12 border-t border-gray-100 pt-10">
+              <div className="flex justify-between items-end mb-6">
+                <h3 className="text-xl md:text-2xl font-black text-gray-900 tracking-tight">Thông số kỹ thuật</h3>
+                <button className="text-sm font-bold text-primary hover:underline flex items-center gap-1 transition-all">
+                  Xem tất cả <span className="text-lg leading-none">›</span>
+                </button>
+              </div>
+              
+              <div className="border border-gray-200 rounded-2xl overflow-hidden bg-white shadow-sm">
+                {(() => {
+                  const parsedSpecs: { key: string; value: string }[] = [];
+                  const blocks = product.specs.split(/\n\s*\n/);
+                  
+                  blocks.forEach(block => {
+                    const lines = block.split('\n').filter(l => l.trim().length > 0);
+                    if (lines.length >= 2) {
+                      const key = lines[0].replace(/\t/g, '').trim();
+                      const value = lines.slice(1).join('\n').replace(/\t/g, '').trim();
+                      parsedSpecs.push({ key, value });
+                    }
+                  });
+
+                  if (parsedSpecs.length === 0) {
+                    return <p className="p-6 text-sm italic text-gray-400 font-medium">Đang cập nhật thông số kĩ thuật...</p>;
+                  }
+
+                  return parsedSpecs.map((spec, idx) => (
+                    <div 
+                      key={idx} 
+                      className={`flex flex-col md:flex-row md:items-start grid-cols-1 md:grid-cols-3 gap-1 md:gap-x-0 p-4 md:px-6 md:py-4 transition-colors hover:bg-primary/5 ${
+                        idx !== parsedSpecs.length - 1 ? 'border-b border-gray-100' : ''
+                      } ${idx % 2 === 0 ? 'bg-gray-50/50' : 'bg-white'}`}
+                    >
+                      <div className="text-[13px] md:text-sm font-bold text-gray-600 w-full md:w-1/3 shrink-0 pt-0.5">
+                        {spec.key}
+                      </div>
+                      <div className="text-[13px] md:text-sm font-medium text-gray-800 w-full md:w-2/3 whitespace-pre-line leading-relaxed">
+                        {spec.value}
+                      </div>
+                    </div>
+                  ));
+                })()}
+              </div>
+            </div>
+          )}
           
           {user?.role === 'admin' && (
             <div className="mt-10 p-6 border-2 border-dashed border-blue-200 rounded-[32px] bg-blue-50/50">

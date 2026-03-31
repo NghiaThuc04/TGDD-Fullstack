@@ -8,6 +8,7 @@ const productSchema = new mongoose.Schema({
   image: { type: String, required: true },
   images: [{ type: String }],
   description: { type: String },
+  specs: { type: String }, // Lưu văn bản thô Thông Số Kỹ Thuật
   stock: { type: Number, default: 0 },
   rating: { type: Number, default: 5.0 },
   sold: { type: Number, default: 0 },

@@ -55,6 +55,7 @@ export interface Product {
   image: string; // Ảnh chính
   images: string[]; // Danh sách ảnh mô tả chi tiết
   description: string;
+  specs?: string; // Bảng thông số kỹ thuật dạng Text thô
   stock?: number; // Tùy chọn, sẽ ẩn ở UI theo yêu cầu
   rating: number;
   sold: number;

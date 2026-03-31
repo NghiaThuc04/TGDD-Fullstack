@@ -263,10 +263,20 @@ const ProductInventory: React.FC = () => {
 
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Mô tả sản phẩm *</label>
-                  <textarea required placeholder="Nhập đặc điểm nổi bật, thông số kỹ thuật..."
+                  <textarea required placeholder="Nhập đặc điểm nổi bật, thông số chung..."
                     className="w-full px-5 py-4 bg-gray-50 rounded-2xl outline-none border-2 border-transparent focus:border-primary font-bold h-32 resize-none transition-all text-sm leading-relaxed"
                     value={editingProduct.description || ''}
                     onChange={e => setEditingProduct({ ...editingProduct, description: e.target.value })}
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Bảng thông số kỹ thuật (Dán từ bài viết/excel)</label>
+                  <p className="text-[9px] text-gray-400 font-bold italic mb-1">Mỗi thuộc tính cách nhau bằng 1 khoảng Enter (Dòng trống).</p>
+                  <textarea placeholder="VD:&#10;Kích thước màn hình&#10;6.9 inches&#10;&#10;Công nghệ...&#10;..."
+                    className="w-full px-5 py-4 bg-gray-50 rounded-2xl outline-none border-2 border-transparent focus:border-primary font-bold h-40 resize-none transition-all text-sm leading-relaxed"
+                    value={editingProduct.specs || ''}
+                    onChange={e => setEditingProduct({ ...editingProduct, specs: e.target.value })}
                   />
                 </div>
               </div>
