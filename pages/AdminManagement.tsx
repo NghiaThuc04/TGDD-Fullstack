@@ -2,11 +2,12 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Navigate, Link } from 'react-router-dom';
+import { ROLES } from '../constants';
 
 const AdminManagement: React.FC = () => {
   const { user, isAuthenticated } = useAuth();
 
-  if (!isAuthenticated || user?.role !== 'admin') {
+  if (!isAuthenticated || user?.role !== ROLES.ADMIN) {
     return <Navigate to="/" replace />;
   }
 

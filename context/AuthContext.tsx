@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, AuthState } from '../types';
 import { loginApi, registerApi, socialLoginApi, updateProfileApi } from '../services/api';
+import { LOCAL_STORAGE_KEYS } from '../constants';
 
 interface AuthContextType extends AuthState {
   login: (username: string, pass: string) => Promise<void>;
@@ -21,7 +22,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   });
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('ob_auth_user');
+    const savedUser = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_USER);
     if (savedUser) {
       setState({
         user: JSON.parse(savedUser),
@@ -36,7 +37,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const login = async (username: string, pass: string) => {
     try {
       const user = await loginApi(username, pass);
-      localStorage.setItem('ob_auth_user', JSON.stringify(user));
+      localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_USER, JSON.stringify(user));
       setState({ user, isAuthenticated: true, isLoading: false });
     } catch (error) {
       throw error;
@@ -47,7 +48,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     if (!state.user) return;
     try {
       const updatedUser = await updateProfileApi(state.user.id, data);
-      localStorage.setItem('ob_auth_user', JSON.stringify(updatedUser));
+      localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_USER, JSON.stringify(updatedUser));
       setState(prev => ({ ...prev, user: updatedUser }));
     } catch (error) {
       throw error;
@@ -57,7 +58,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const register = async (username: string, pass: string, name: string) => {
     try {
       const user = await registerApi(username, pass, name);
-      localStorage.setItem('ob_auth_user', JSON.stringify(user));
+      localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_USER, JSON.stringify(user));
       setState({ user, isAuthenticated: true, isLoading: false });
     } catch (error) {
       throw error;
@@ -67,7 +68,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const socialLogin = async (provider: 'google' | 'facebook') => {
     try {
       const user = await socialLoginApi(provider);
-      localStorage.setItem('ob_auth_user', JSON.stringify(user));
+      localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_USER, JSON.stringify(user));
       setState({ user, isAuthenticated: true, isLoading: false });
     } catch (error) {
       throw error;
@@ -75,8 +76,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const logout = () => {
-    localStorage.removeItem('ob_auth_user');
-    localStorage.removeItem('ob_jwt_token');
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_USER);
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.TOKEN);
     setState({
       user: null,
       isAuthenticated: false,

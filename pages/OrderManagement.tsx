@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { Navigate, Link } from 'react-router-dom';
 import { getAllOrdersApi, updateOrderStatusApi, deleteOrderApi, updateOrderApi, getStaffListApi } from '../services/api';
 import { Order, User } from '../types';
+import { ROLES } from '../constants';
 
 const STATUS_CONFIG: Record<Order['status'], { label: string; color: string; dot: string }> = {
   pending:   { label: 'Chờ xử lý',   color: 'bg-orange-100 text-orange-600 border-orange-200', dot: 'bg-orange-400' },
@@ -26,7 +27,7 @@ const OrderManagement: React.FC = () => {
   const [editForm, setEditForm] = useState({ customerName: '', customerPhone: '', address: '', paymentMethod: '' });
 
   useEffect(() => {
-    if (isAuthenticated && user?.role === 'admin') {
+    if (isAuthenticated && user?.role === ROLES.ADMIN) {
       fetchOrders();
       getStaffListApi().then(setStaffs).catch(() => {});
     }
@@ -95,7 +96,7 @@ const OrderManagement: React.FC = () => {
     }
   };
 
-  if (!isAuthenticated || user?.role !== 'admin') return <Navigate to="/" replace />;
+  if (!isAuthenticated || user?.role !== ROLES.ADMIN) return <Navigate to="/" replace />;
 
   const filtered = filter === 'all' ? orders : orders.filter(o => o.status === filter);
 

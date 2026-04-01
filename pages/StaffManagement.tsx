@@ -4,6 +4,7 @@ import { getStaffListApi, createStaffApi, updateStaffApi, deleteStaffApi, getSta
 import { User } from '../types';
 import { useAuth } from '../context/AuthContext';
 import { Navigate } from 'react-router-dom';
+import { ROLES } from '../constants';
 
 const PERMISSION_OPTIONS = [
   { key: 'order_confirm', label: '✅ Xác nhận đơn hàng' },
@@ -40,7 +41,7 @@ const StaffManagement: React.FC = () => {
   const [activitiesData, setActivitiesData] = useState<any>(null);
   const [loadingActivities, setLoadingActivities] = useState(false);
 
-  if (currentUser?.role !== 'admin') return <Navigate to="/" replace />;
+  if (currentUser?.role !== ROLES.ADMIN) return <Navigate to="/" replace />;
 
   useEffect(() => { loadStaff(); }, []);
   const loadStaff = async () => {
@@ -120,8 +121,8 @@ const StaffManagement: React.FC = () => {
     }
   };
 
-  const adminList = staff.filter(u => u.role === 'admin');
-  const staffList = staff.filter(u => u.role === 'staff');
+  const adminList = staff.filter(u => u.role === ROLES.ADMIN);
+  const staffList = staff.filter(u => u.role === ROLES.STAFF);
 
   return (
     <div className="space-y-12 pb-20">
@@ -237,8 +238,8 @@ const StaffManagement: React.FC = () => {
                 <div className="flex gap-3">
                   {(['staff', 'admin'] as const).map(r => (
                     <button key={r} type="button" onClick={() => setForm({ ...form, role: r })}
-                      className={`flex-1 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest border-2 transition-all ${form.role === r ? (r === 'admin' ? 'bg-yellow-400 text-white border-yellow-400' : 'bg-primary text-white border-primary') : 'bg-gray-50 text-gray-400 border-transparent hover:border-gray-200'}`}
-                    >{r === 'admin' ? '👑 Admin' : '👷 Nhân viên'}</button>
+                      className={`flex-1 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest border-2 transition-all ${form.role === r ? (r === ROLES.ADMIN ? 'bg-yellow-400 text-white border-yellow-400' : 'bg-primary text-white border-primary') : 'bg-gray-50 text-gray-400 border-transparent hover:border-gray-200'}`}
+                    >{r === ROLES.ADMIN ? '👑 Admin' : '👷 Nhân viên'}</button>
                   ))}
                 </div>
               </div>
@@ -387,7 +388,7 @@ interface CardProps {
 
 const StaffCard: React.FC<CardProps> = ({ user, currentUser, onEdit, onDelete, confirmDelete, deletingId, onConfirmDelete, onCancelDelete, onViewActivities }) => {
   const isSelf = user.id === currentUser?.id;
-  const isAdmin = user.role === 'admin';
+  const isAdmin = user.role === ROLES.ADMIN;
 
   return (
     <div className="bg-white rounded-3xl border border-gray-100 p-6 flex flex-col gap-4 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all group">

@@ -1,6 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Product, CartItem } from '../types';
+import { LOCAL_STORAGE_KEYS } from '../constants';
 
 interface CartContextType {
   cart: CartItem[];
@@ -20,12 +21,12 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
-    const savedCart = localStorage.getItem('ob_cart');
+    const savedCart = localStorage.getItem(LOCAL_STORAGE_KEYS.CART);
     if (savedCart) setCart(JSON.parse(savedCart));
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('ob_cart', JSON.stringify(cart));
+    localStorage.setItem(LOCAL_STORAGE_KEYS.CART, JSON.stringify(cart));
   }, [cart]);
 
   const addToCart = (product: Product, quantity = 1) => {

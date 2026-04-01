@@ -1,12 +1,13 @@
 
 import { User, Product, Order, UIConfig, Article, Banner } from '../types';
+import { LOCAL_STORAGE_KEYS, COMMISSION_RATES, ROLES } from '../constants';
 
 // Mock DB Storage
 let MOCK_USERS: (User & { password?: string, permissions?: string[] })[] = [
-  { id: '1', username: 'admin', name: 'OnlyBuyer Admin', role: 'admin', password: '040104', permissions: ['all'] },
-  { id: '2', username: 'customer_demo', name: 'Khách Hàng Mẫu', role: 'customer', password: 'password123', phoneNumber: '0987654321', address: '72 Lê Thánh Tôn, Quận 1, TP. Hồ Chí Minh' },
-  { id: '3', username: 'staff1', name: 'Nguyễn Văn Nhân Viên', role: 'staff', password: 'staff123', permissions: ['order_confirm', 'manage_products'], totalSales: 12, totalRevenue: 45000000 },
-  { id: '4', username: 'staff2', name: 'Trần Thị Content', role: 'staff', password: 'staff123', permissions: ['post_article'], totalSales: 5, totalRevenue: 8000000 }
+  { id: '1', username: 'admin', name: 'OnlyBuyer Admin', role: ROLES.ADMIN as any, password: '040104', permissions: ['all'] },
+  { id: '2', username: 'customer_demo', name: 'Khách Hàng Mẫu', role: ROLES.CUSTOMER as any, password: 'password123', phoneNumber: '0987654321', address: '72 Lê Thánh Tôn, Quận 1, TP. Hồ Chí Minh' },
+  { id: '3', username: 'staff1', name: 'Nguyễn Văn Nhân Viên', role: ROLES.STAFF as any, password: 'staff123', permissions: ['order_confirm', 'manage_products'], totalSales: 12, totalRevenue: 45000000 },
+  { id: '4', username: 'staff2', name: 'Trần Thị Content', role: ROLES.STAFF as any, password: 'staff123', permissions: ['post_article'], totalSales: 5, totalRevenue: 8000000 }
 ];
 
 let MOCK_ARTICLES: Article[] = [
@@ -103,9 +104,9 @@ const DEFAULT_UI_CONFIG: UIConfig = {
 
 // Logic tính hoa hồng
 export const calculateCommission = (amount: number): number => {
-  if (amount < 1000000) return amount * 0.15;
-  if (amount < 10000000) return amount * 0.10;
-  return amount * 0.05;
+  if (amount < COMMISSION_RATES.TIER_1.THRESHOLD) return amount * COMMISSION_RATES.TIER_1.RATE;
+  if (amount < COMMISSION_RATES.TIER_2.THRESHOLD) return amount * COMMISSION_RATES.TIER_2.RATE;
+  return amount * COMMISSION_RATES.DEFAULT_RATE;
 };
 
 // Auth API Implementation
@@ -130,7 +131,7 @@ export const registerApi = async (username: string, pass: string, name: string):
         id: Math.random().toString(36).substr(2, 9),
         username,
         name,
-        role: 'customer' as const,
+        role: ROLES.CUSTOMER as any,
         password: pass
       };
       MOCK_USERS.push(newUser);
@@ -169,7 +170,7 @@ export const updateProfileApi = async (userId: string, data: Partial<User>): Pro
 // Staff API Implementation
 export const getStaffListApi = async (): Promise<User[]> => {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(MOCK_USERS.filter(u => u.role === 'staff' || u.role === 'admin')), 300);
+    setTimeout(() => resolve(MOCK_USERS.filter(u => u.role === ROLES.STAFF || u.role === ROLES.ADMIN)), 300);
   });
 };
 
@@ -196,7 +197,7 @@ export const getArticlesApi = async (): Promise<Article[]> => {
 // Product API Implementation
 export const getProductsApi = async (): Promise<Product[]> => {
   return new Promise((resolve) => {
-    const saved = localStorage.getItem('ob_products');
+    const saved = localStorage.getItem(LOCAL_STORAGE_KEYS.PRODUCTS);
     setTimeout(() => resolve(saved ? JSON.parse(saved) : DEFAULT_PRODUCTS), 200);
   });
 };
@@ -208,12 +209,12 @@ export const getProductByIdApi = async (id: string): Promise<Product | null> => 
 
 export const saveProductApi = async (product: Product): Promise<void> => {
   return new Promise((resolve) => {
-    const saved = localStorage.getItem('ob_products');
+    const saved = localStorage.getItem(LOCAL_STORAGE_KEYS.PRODUCTS);
     let products = saved ? JSON.parse(saved) : DEFAULT_PRODUCTS;
     const index = products.findIndex((p: any) => p.id === product.id);
     if (index !== -1) products[index] = product;
     else products.push(product);
-    localStorage.setItem('ob_products', JSON.stringify(products));
+    localStorage.setItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
     setTimeout(resolve, 500);
   });
 };
@@ -229,14 +230,14 @@ export const placeOrderApi = async (orderData: any): Promise<{ orderId: string }
       createdAt: new Date().toISOString()
     };
     MOCK_ORDERS.push(newOrder);
-    localStorage.setItem('ob_orders', JSON.stringify(MOCK_ORDERS));
+    localStorage.setItem(LOCAL_STORAGE_KEYS.ORDERS, JSON.stringify(MOCK_ORDERS));
     setTimeout(() => resolve({ orderId }), 800);
   });
 };
 
 export const getAllOrdersApi = async (): Promise<Order[]> => {
   return new Promise((resolve) => {
-    const saved = localStorage.getItem('ob_orders');
+    const saved = localStorage.getItem(LOCAL_STORAGE_KEYS.ORDERS);
     if (saved) MOCK_ORDERS = JSON.parse(saved);
     setTimeout(() => resolve([...MOCK_ORDERS]), 400);
   });
@@ -244,12 +245,12 @@ export const getAllOrdersApi = async (): Promise<Order[]> => {
 
 export const updateOrderStatusApi = async (orderId: string, status: Order['status']): Promise<void> => {
   return new Promise((resolve) => {
-    const saved = localStorage.getItem('ob_orders');
+    const saved = localStorage.getItem(LOCAL_STORAGE_KEYS.ORDERS);
     if (saved) MOCK_ORDERS = JSON.parse(saved);
     const index = MOCK_ORDERS.findIndex(o => o.id === orderId);
     if (index !== -1) {
       MOCK_ORDERS[index].status = status;
-      localStorage.setItem('ob_orders', JSON.stringify(MOCK_ORDERS));
+      localStorage.setItem(LOCAL_STORAGE_KEYS.ORDERS, JSON.stringify(MOCK_ORDERS));
     }
     setTimeout(resolve, 500);
   });
@@ -258,14 +259,14 @@ export const updateOrderStatusApi = async (orderId: string, status: Order['statu
 // UI Config API Implementation
 export const getUIConfigApi = async (): Promise<UIConfig> => {
   return new Promise((resolve) => {
-    const saved = localStorage.getItem('ob_ui_config');
+    const saved = localStorage.getItem(LOCAL_STORAGE_KEYS.UI_CONFIG);
     setTimeout(() => resolve(saved ? JSON.parse(saved) : DEFAULT_UI_CONFIG), 300);
   });
 };
 
 export const saveUIConfigApi = async (config: UIConfig): Promise<void> => {
   return new Promise((resolve) => {
-    localStorage.setItem('ob_ui_config', JSON.stringify(config));
+    localStorage.setItem(LOCAL_STORAGE_KEYS.UI_CONFIG, JSON.stringify(config));
     setTimeout(resolve, 500);
   });
 };

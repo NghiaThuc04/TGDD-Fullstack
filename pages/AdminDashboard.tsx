@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Navigate, Link } from 'react-router-dom';
+import { ROLES } from '../constants';
 import OrderManagement from './OrderManagement';
 import StaffManagement from './StaffManagement';
 import WebInfoEditor from './WebInfoEditor';
@@ -15,17 +16,17 @@ const AdminDashboard: React.FC = () => {
   const { user, isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState<AdminTab>('orders');
 
-  if (!isAuthenticated || (user?.role !== 'admin' && user?.role !== 'staff')) {
+  if (!isAuthenticated || (user?.role !== ROLES.ADMIN && user?.role !== ROLES.STAFF)) {
     return <Navigate to="/" replace />;
   }
 
   const menuItems = [
-    { id: 'orders', label: '🛒 Đơn hàng', roles: ['admin', 'staff'] },
-    { id: 'banners', label: '🎬 Slider Banners', roles: ['admin', 'staff'] },
-    { id: 'products', label: '📦 Sản phẩm', roles: ['admin', 'staff'] },
-    { id: 'staff', label: '👥 Nhân sự', roles: ['admin'] },
-    { id: 'webinfo', label: '🎨 Cấu hình Site', roles: ['admin'] },
-    { id: 'posts', label: '📝 Quảng cáo', roles: ['admin', 'staff'] },
+    { id: 'orders', label: '🛒 Đơn hàng', roles: [ROLES.ADMIN, ROLES.STAFF] },
+    { id: 'banners', label: '🎬 Slider Banners', roles: [ROLES.ADMIN, ROLES.STAFF] },
+    { id: 'products', label: '📦 Sản phẩm', roles: [ROLES.ADMIN, ROLES.STAFF] },
+    { id: 'staff', label: '👥 Nhân sự', roles: [ROLES.ADMIN] },
+    { id: 'webinfo', label: '🎨 Cấu hình Site', roles: [ROLES.ADMIN] },
+    { id: 'posts', label: '📝 Quảng cáo', roles: [ROLES.ADMIN, ROLES.STAFF] },
   ];
 
   return (

@@ -5,6 +5,7 @@ import { getProductByIdApi } from '../services/api';
 import { Product } from '../types';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { ROLES } from '../constants';
 
 const ProductDetailPage: React.FC = () => {
   const { id } = useParams();
@@ -72,7 +73,7 @@ const ProductDetailPage: React.FC = () => {
               <span className="text-yellow-500 text-xs">★★★★★</span>
             </div>
             <div className="text-sm font-bold text-gray-400"><span className="text-gray-900">{product.sold.toLocaleString()}</span> ĐÃ BÁN</div>
-            {user?.role === 'admin' && (
+            {user?.role === ROLES.ADMIN && (
               <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-[9px] font-black border border-blue-200 uppercase">QUẢN TRỊ VIÊN</span>
             )}
           </div>
@@ -168,7 +169,7 @@ const ProductDetailPage: React.FC = () => {
             </div>
           )}
           
-          {user?.role === 'admin' && (
+          {user?.role === ROLES.ADMIN && (
             <div className="mt-10 p-6 border-2 border-dashed border-blue-200 rounded-[32px] bg-blue-50/50">
                <h4 className="text-xs font-black text-blue-700 mb-4 uppercase tracking-widest">QUẢN TRỊ VIÊN CONSOLE</h4>
                <div className="flex flex-wrap gap-3">

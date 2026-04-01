@@ -5,14 +5,15 @@
  */
 
 import { User, Product, Order, UIConfig, Article } from '../types';
+import { LOCAL_STORAGE_KEYS, COMMISSION_RATES } from '../constants';
 
-const BASE_URL = 'https://tgdd-fullstack.onrender.com/api';
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://tgdd-fullstack.onrender.com/api';
 
 // ─────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────
 
-const getToken = (): string | null => localStorage.getItem('ob_jwt_token');
+const getToken = (): string | null => localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN);
 
 const authHeaders = (): Record<string, string> => {
   const token = getToken();
@@ -46,9 +47,9 @@ const apiFetch = async <T>(
 // Commission Logic (tính ở frontend, giống cũ)
 // ─────────────────────────────────────────────
 export const calculateCommission = (amount: number): number => {
-  if (amount < 1000000) return amount * 0.15;
-  if (amount < 10000000) return amount * 0.10;
-  return amount * 0.05;
+  if (amount < COMMISSION_RATES.TIER_1.THRESHOLD) return amount * COMMISSION_RATES.TIER_1.RATE;
+  if (amount < COMMISSION_RATES.TIER_2.THRESHOLD) return amount * COMMISSION_RATES.TIER_2.RATE;
+  return amount * COMMISSION_RATES.DEFAULT_RATE;
 };
 
 // ─────────────────────────────────────────────
@@ -60,7 +61,7 @@ export const loginApi = async (username: string, pass: string): Promise<User> =>
     method: 'POST',
     body: JSON.stringify({ username, password: pass }),
   });
-  localStorage.setItem('ob_jwt_token', data.token);
+  localStorage.setItem(LOCAL_STORAGE_KEYS.TOKEN, data.token);
   return data.user;
 };
 
@@ -69,7 +70,7 @@ export const registerApi = async (username: string, pass: string, name: string):
     method: 'POST',
     body: JSON.stringify({ username, password: pass, name }),
   });
-  localStorage.setItem('ob_jwt_token', data.token);
+  localStorage.setItem(LOCAL_STORAGE_KEYS.TOKEN, data.token);
   return data.user;
 };
 

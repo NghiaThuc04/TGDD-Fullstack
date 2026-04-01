@@ -6,6 +6,7 @@ import { useUIConfig } from '../context/UIConfigContext';
 import { Product, Banner } from '../types';
 import { getProductsApi } from '../services/api';
 import { Link } from 'react-router-dom';
+import { ROLES } from '../constants';
 
 const BannerSlider: React.FC<{ banners: Banner[] }> = ({ banners }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -219,7 +220,7 @@ const HomePage: React.FC = () => {
               </h2>
               <div className="h-1.5 w-20 bg-primary mt-2 rounded-full"></div>
             </div>
-            {isAuthenticated && (user?.role === 'admin' || user?.role === 'staff') && (
+            {isAuthenticated && (user?.role === ROLES.ADMIN || user?.role === ROLES.STAFF) && (
               <Link to="/admin" className="bg-gray-50 text-primary px-6 py-2.5 rounded-xl font-black text-xs hover:bg-primary hover:text-white transition-all border border-gray-100">
                 TRANG QUẢN TRỊ ⚙️
               </Link>
