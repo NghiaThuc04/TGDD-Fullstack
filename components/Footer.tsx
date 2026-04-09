@@ -7,9 +7,7 @@ const Footer: React.FC = () => {
     {
       title: 'CHĂM SÓC KHÁCH HÀNG',
       links: [
-        { label: 'Trung Tâm Trợ Giúp', url: '#' },
         { label: 'Hướng Dẫn Mua Hàng', url: '#' },
-        { label: 'Hướng Dẫn Bán Hàng', url: '#' },
         { label: 'Thanh Toán', url: '#' },
         { label: 'Trả Hàng & Hoàn Tiền', url: '#' },
         { label: 'Chăm Sóc Khách Hàng', url: '#' },
@@ -20,7 +18,6 @@ const Footer: React.FC = () => {
       title: 'VỀ ONLYBUYER',
       links: [
         { label: 'Giới Thiệu Website', url: '#' },
-        { label: 'Tuyển Dụng', url: '#' },
         { label: 'Điều Khoản', url: '#' },
         { label: 'Chính Sách Bảo Mật', url: '#' },
         { label: 'Liên Hệ Truyền Thông', url: '#' },
@@ -29,7 +26,6 @@ const Footer: React.FC = () => {
   ];
 
   const payments = [
-    { name: 'Visa', icon: 'https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg' },
     { name: 'MoMo', icon: 'https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-MoMo-Square.png' },
     { name: 'VNPay', icon: 'https://vinadesign.vn/uploads/images/2023/05/vnpay-logo-vinadesign-25-12-57-55.jpg' }
   ];
