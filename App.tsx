@@ -13,6 +13,7 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 import AccountSettings from './pages/AccountSettings';
+import SupportDetailPage from './pages/SupportDetailPage';
 import AdminEditSidebar from './components/AdminEditSidebar';
 
 const ScrollToTop = () => {
@@ -60,6 +61,7 @@ const AppContent: React.FC = () => {
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/account" element={<AccountSettings />} />
+          <Route path="/ho-tro/:slug" element={<SupportDetailPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

@@ -7,20 +7,18 @@ const Footer: React.FC = () => {
     {
       title: 'CHĂM SÓC KHÁCH HÀNG',
       links: [
-        { label: 'Hướng Dẫn Mua Hàng', url: '#' },
-        { label: 'Thanh Toán', url: '#' },
-        { label: 'Trả Hàng & Hoàn Tiền', url: '#' },
-        { label: 'Chăm Sóc Khách Hàng', url: '#' },
-        { label: 'Chính Sách Bảo Hành', url: '#' },
+        { label: 'Hướng Dẫn Mua Hàng', slug: 'huong-dan-mua-hang' },
+        { label: 'Thanh Toán', slug: 'thanh-toan' },
+        { label: 'Trả Hàng & Hoàn Tiền', slug: 'tra-hang-hoan-tien' },
+        { label: 'Chính Sách Bảo Hành', slug: 'chinh-sach-bao-hanh' },
       ]
     },
     {
       title: 'VỀ ONLYBUYER',
       links: [
-        { label: 'Giới Thiệu Website', url: '#' },
-        { label: 'Điều Khoản', url: '#' },
-        { label: 'Chính Sách Bảo Mật', url: '#' },
-        { label: 'Liên Hệ Truyền Thông', url: '#' },
+        { label: 'Giới Thiệu Website', slug: 'gioi-thieu' },
+        { label: 'Điều Khoản', slug: 'dieu-khoan' },
+        { label: 'Chính Sách Bảo Mật', slug: 'chinh-sach-bao-mat' },
       ]
     }
   ];
@@ -41,9 +39,9 @@ const Footer: React.FC = () => {
               <ul className="space-y-3">
                 {section.links.map((link, lIdx) => (
                   <li key={lIdx}>
-                    <a href={link.url} className="text-[12px] font-medium text-gray-500 hover:text-primary transition-colors">
+                    <Link to={`/ho-tro/${link.slug}`} className="text-[12px] font-medium text-gray-500 hover:text-primary transition-colors">
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -85,10 +83,10 @@ const Footer: React.FC = () => {
         {/* Middle Section: Policies */}
         <div className="border-t border-gray-50 py-10">
           <div className="flex flex-wrap justify-center gap-x-12 gap-y-4 mb-10">
-            <Link to="#" className="text-[11px] font-black text-gray-400 uppercase tracking-widest hover:text-gray-900">CHÍNH SÁCH BẢO MẬT</Link>
-            <Link to="#" className="text-[11px] font-black text-gray-400 uppercase tracking-widest hover:text-gray-900">QUY CHẾ HOẠT ĐỘNG</Link>
-            <Link to="#" className="text-[11px] font-black text-gray-400 uppercase tracking-widest hover:text-gray-900">CHÍNH SÁCH VẬN CHUYỂN</Link>
-            <Link to="#" className="text-[11px] font-black text-gray-400 uppercase tracking-widest hover:text-gray-900">CHÍNH SÁCH TRẢ HÀNG & HOÀN TIỀN</Link>
+            <Link to="/ho-tro/chinh-sach-bao-mat" className="text-[11px] font-black text-gray-400 uppercase tracking-widest hover:text-gray-900">CHÍNH SÁCH BẢO MẬT</Link>
+            <Link to="/ho-tro/dieu-khoan" className="text-[11px] font-black text-gray-400 uppercase tracking-widest hover:text-gray-900">QUY CHẾ HOẠT ĐỘNG</Link>
+            <Link to="/ho-tro/huong-dan-mua-hang" className="text-[11px] font-black text-gray-400 uppercase tracking-widest hover:text-gray-900">CHÍNH SÁCH VẬN CHUYỂN</Link>
+            <Link to="/ho-tro/tra-hang-hoan-tien" className="text-[11px] font-black text-gray-400 uppercase tracking-widest hover:text-gray-900">CHÍNH SÁCH TRẢ HÀNG & HOÀN TIỀN</Link>
           </div>
 
           {/* Legal Info Section */}
