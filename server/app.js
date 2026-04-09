@@ -13,6 +13,10 @@ const Product = require('./models/Product');
 const Order = require('./models/Order');
 const Article = require('./models/Article');
 const UIConfig = require('./models/UIConfig');
+const Policy = require('./models/Policy');
+
+// Route Modules
+const policyRoutes = require('./routes/policyRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -269,6 +273,7 @@ app.post('/api/ui-config', protect, adminOnly, async (req, res) => {
 });
 
 // STATIC & HEALTH
+app.use('/api/policies', policyRoutes);
 app.get('/api/health', (req, res) => res.json({ status: 'ok', msg: 'System is connected to Atlas!' }));
 app.use(express.static(path.join(__dirname, '../dist')));
 app.get('*', (req, res) => res.sendFile(path.join(__dirname, '../dist/index.html')));

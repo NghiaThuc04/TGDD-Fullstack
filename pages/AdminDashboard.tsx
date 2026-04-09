@@ -9,8 +9,9 @@ import WebInfoEditor from './WebInfoEditor';
 import PostManager from './PostManager';
 import ProductInventory from './ProductInventory';
 import BannerManager from './BannerManager';
+import PolicyManager from './PolicyManager';
 
-type AdminTab = 'orders' | 'staff' | 'webinfo' | 'posts' | 'products' | 'banners';
+type AdminTab = 'orders' | 'staff' | 'webinfo' | 'posts' | 'products' | 'banners' | 'policies';
 
 const AdminDashboard: React.FC = () => {
   const { user, isAuthenticated } = useAuth();
@@ -27,6 +28,7 @@ const AdminDashboard: React.FC = () => {
     { id: 'staff', label: '👥 Nhân sự', roles: [ROLES.ADMIN] },
     { id: 'webinfo', label: '🎨 Cấu hình Site', roles: [ROLES.ADMIN] },
     { id: 'posts', label: '📝 Quảng cáo', roles: [ROLES.ADMIN, ROLES.STAFF] },
+    { id: 'policies', label: '📄 Nội dung Hỗ trợ', roles: [ROLES.ADMIN] },
   ];
 
   return (
@@ -79,6 +81,7 @@ const AdminDashboard: React.FC = () => {
         {activeTab === 'posts' && <PostManager />}
         {activeTab === 'products' && <ProductInventory />}
         {activeTab === 'banners' && <BannerManager />}
+        {activeTab === 'policies' && <PolicyManager />}
       </div>
     </div>
   );
