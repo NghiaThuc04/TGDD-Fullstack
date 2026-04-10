@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
@@ -11,10 +11,19 @@ const Navbar: React.FC = () => {
   const { config } = useUIConfig();
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <nav className="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
-      <div className="bg-primary text-white py-1.5 px-4 text-[10px] font-semibold hidden sm:block opacity-90">
+    <nav className={`bg-white sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'shadow-md border-transparent' : 'shadow-sm border-b border-gray-100'}`}>
+      <div className={`bg-primary text-white px-4 text-[10px] font-semibold hide-scroll overflow-hidden transition-all duration-300 hidden sm:block opacity-90 ${isScrolled ? 'max-h-0 py-0' : 'max-h-10 py-1.5'}`}>
         <div className="max-w-7xl mx-auto flex justify-between">
           <div className="flex gap-4">
             <span className="hover:text-blue-100 cursor-pointer">Kênh Người Bán</span>
@@ -26,7 +35,7 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-3 md:py-4">
+      <div className={`max-w-7xl mx-auto px-4 transition-all duration-300 ${isScrolled ? 'py-2 md:py-2' : 'py-3 md:py-4'}`}>
         <div className="flex flex-wrap items-center justify-between gap-3 md:gap-8">
           {/* Logo Section */}
           <Link to="/" className="flex items-center gap-2 md:gap-3 group shrink-0 order-1">
