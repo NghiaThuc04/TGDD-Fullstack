@@ -34,8 +34,14 @@ export const UIConfigProvider: React.FC<{ children: ReactNode }> = ({ children }
   const saveConfig = async () => {
     if (!config) return;
     setIsSaving(true);
-    await saveUIConfigApi(config);
-    setIsSaving(false);
+    try {
+      await saveUIConfigApi(config);
+      alert('Lưu cấu hình giao diện thành công!');
+    } catch (err: any) {
+      alert(`Lưu thất bại: ${err.message || 'Lỗi không xác định'}`);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   if (!config) return null; // Wait for initial config
