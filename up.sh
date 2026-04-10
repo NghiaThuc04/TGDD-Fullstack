@@ -22,5 +22,5 @@ echo "✅ Hoàn tất thần chú!"
 
 
 git add .
-git commit -m "làm lại giao diện đơn hàng"
+git commit -m "làm lại giao diện cms"
 git push -u origin main

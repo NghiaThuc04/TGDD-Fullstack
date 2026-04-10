@@ -102,10 +102,13 @@ const AdminPolicyEditor: React.FC<AdminPolicyEditorProps> = ({ slug }) => {
         },
         body: JSON.stringify({ title, content: finalContent }),
       });
-      if (!res.ok) throw new Error();
+      if (!res.ok) {
+         const errData = await res.json().catch(() => ({}));
+         throw new Error(errData.message || `Lỗi ${res.status}: Không kết nối được API`);
+      }
       showToast('✅ Lưu thành công!', 'success');
-    } catch {
-      showToast('❌ Lưu thất bại, vui lòng thử lại!', 'error');
+    } catch (err: any) {
+      showToast(`❌ Lưu thất bại: ${err.message}`, 'error');
     } finally {
       setSaving(false);
     }
